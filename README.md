@@ -1,4 +1,3 @@
-=====
 Projy
 =====
 **Projy is a template-based skeleton generator**.
@@ -16,23 +15,23 @@ As much as possible, Projy tries to be simple to use and extend.
 Installation
 ============
 If you are familiar with Python, it is strongly suggested that you install
-Projy in `virtualenv <http://pypi.python.org/pypi/virtualenv>`_.
+Projy in [virtualenv](http://pypi.python.org/pypi/virtualenv).
 
 
 Pip and Distribute
 ------------------
-If you are on Linux or Mac OS X, just type::
+If you are on Linux or Mac OS X, just type:
 
     $ sudo pip install projy
 
-If no pip available, try ``easy_install``::
+If no pip available, try ``easy_install``:
 
     $ sudo easy_install projy
 
 
 Install from git
 ----------------
-If you prefer git, that is ok too. You can get the very latest code at GitHub::
+If you prefer git, that is ok too. You can get the very latest code at GitHub:
 
     $ git clone http://github.com/stephanepechard/projy
 
@@ -40,18 +39,18 @@ If you prefer git, that is ok too. You can get the very latest code at GitHub::
 Usage
 =====
 As an example, let's create a Python package. The Projy template mostly
-follows recommandations from `The Hitchhiker’s Guide to Packaging
-<http://guide.python-distribute.org/>`_.
+follows recommandations from
+[The Hitchhiker's Guide to Packaging](http://guide.python-distribute.org/).
 
 
 An example
 ----------
-Use simply::
+Use simply:
 
     $ projy PythonPackage TowelStuff
 
 In the same directory as you typed this command, you now have a
-*TowelStuff* directory, with the following structure::
+*TowelStuff* directory, with the following structure:
 
 
     TowelStuff/
@@ -70,17 +69,12 @@ In the same directory as you typed this command, you now have a
 
 Each file has been created with a specific template, so the package is fully
 functional, yet empty. Now, let's give a little explanation on each file.
-You can find `further information here <http://guide.python-distribute.org/creation.html>`_.
+You can find [further information here](http://guide.python-distribute.org/creation.html).
 
 
 Options
 -------
-Projy comes also with one command line option.
-
-
-Listing templates
-^^^^^^^^^^^^^^^^^
-Type::
+Projy comes also with one command line option. Type:
 
     $ projy -l
 
@@ -90,12 +84,12 @@ That's an easy way to copy/paste the name of the template you want to use next.
 
 Available templates
 ===================
-The currently available templates are::
+The currently available templates are:
 
- * LaTeX book
- * Python package
- * Python script
- * Projy template
+ * a LaTeX book ;
+ * a Python package ;
+ * a Python script ;
+ * a Projy template, meta-style.
 
 See the official doc for more details on created files into these templates.
 Soon to come, more templates around Django. Of course, anyone can propose
