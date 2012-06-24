@@ -11,6 +11,8 @@ nothing fancy on that part. You can easily add new templates
 and new ways to collect data to insert in the created files.
 As much as possible, Projy tries to be simple to use and extend.
 
+See [the complete documentation](http://projy.readthedocs.org/).
+
 
 Installation
 ============

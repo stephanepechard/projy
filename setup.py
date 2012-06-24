@@ -14,16 +14,15 @@ from os.path import join, dirname
 config = {
     'name': 'Projy',
     'version': '0.1',
-    'packages': ['projy', 'projy.templates', 'projy.collectors', 'projy.tests'],
-    'description': 'My projy Project',
-    'long_description': open(join(dirname(__file__), 'README.txt')).read(),
+    'packages': ['projy', 'projy.templates', 'projy.collectors'],
+    'description': 'Projy is a template-based skeleton generator.',
+    'long_description': open(join(dirname(__file__), 'README.md')).read(),
     'author': 'Stéphane Péchard',
-    'url': 'http://s13d.fr/',
-    'download_url': 'Where to download it.',
+    'url': 'https://github.com/stephanepechard/projy',
+    'download_url': 'https://github.com/stephanepechard/projy',
     'author_email': 'stephanepechard@gmail.com',
-    'install_requires': ['nose'],
+    'install_requires': [],
     'scripts': ['bin/projy'],
-    'test_suite': 'projy.test',
     'include_package_data': True,
 }
 
