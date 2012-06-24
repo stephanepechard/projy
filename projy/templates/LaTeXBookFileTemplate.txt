@@ -1,0 +1,153 @@
+%%%%%%%%%%%%%%%%
+%% Auteur : $author
+%% Date : $date
+%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%
+%% Declaration
+%%%%%%%%%%%%%%%%
+\documentclass[a4paper, pdftex]{book}
+
+
+
+%%%%%%%%%%%%%%%%
+%% Packages
+%%%%%%%%%%%%%%%%
+% important packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[kerning=true,babel=true]{microtype}
+\usepackage[headheight=15.91pt]{geometry}
+\usepackage{fancyhdr}
+
+%% misc
+% math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{mathtools}
+
+% pgf
+\usepackage{tikz}
+\usetikzlibrary{arrows,patterns,plotmarks,backgrounds,shapes,er,shadows}
+\usepackage{pgfplots}
+
+% layout
+\usepackage[center, labelsep=endash]{caption}   % before subfig
+\usepackage{subfig}
+\usepackage{pdfpages}                           % pdf files inclusion
+\usepackage{wrapfig}
+\usepackage[nottoc]{tocbibind}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth }{0.2 em}
+
+% useful
+\usepackage{lastpage}
+\usepackage{listings}                           % code listing
+
+%% babel
+\usepackage[english]{babel}
+\usepackage[babel]{csquotes}
+
+
+\newcommand{\mytitle}{My new shiny book}
+
+%% hyperref and pdf stuff
+% \usepackage{graphicx}
+\usepackage[pdfpagelabels, pagebackref]{hyperref}
+
+\hypersetup{
+	pdftitle={\mytitle},
+	pdfauthor={$author},
+	pdfsubject={}
+	pdfkeywords={},
+	pdfcreator={\LaTeXe}
+	pdfproducer={$author}
+}
+\usepackage[all]{hypcap}
+
+
+
+%%%%%%%%%%%%%%%%
+%% Commands
+%%%%%%%%%%%%%%%%
+%% margin notes
+\newcommand{\note}[1]{\marginpar{%
+  \vskip-\baselineskip %raise the marginpar a bit
+  \raggedright\small
+  \color{black}{\hrule\smallskip#1}\par\smallskip\hrule}}
+\newcommand{\nonotes}{\renewcommand{\note}[1]{}}
+
+%% strong (as in html)
+\DeclareRobustCommand{\strong}[1]{%
+\textbf{#1}%
+}
+
+%% dedication
+\DeclareRobustCommand{\dedication}[1]{%
+\clearemptydoublepage
+\thispagestyle{empty}
+\vspace*{\stretch{1}}\par
+{\begin{flushright}\emph{#1}\end{flushright}\par}
+\vspace*{\stretch{2}}
+}
+
+%% sur-paragraph (just add a line between two groups of paragraphs)
+\DeclareRobustCommand{\surparagraph}{%
+\par\medskip
+}
+
+
+
+%%%%%%%%%%%%%%%%
+%% Document settings
+%%%%%%%%%%%%%%%%
+%% TOC settings
+\setcounter{tocdepth}{2}
+% \setcounter{secnumdepth}{8}
+
+%% headers and footers
+\pagestyle{fancy}
+\fancyhf{} % on efface tout
+\fancyhead[RO]{\nouppercase{\emph{\rightmark}}}
+\fancyhead[L]{\nouppercase{\emph{\today}}}
+\fancyfoot[C]{\strong{--~\thepage~--}}
+
+
+%% remove header and footer of an empty page
+\let\origdoublepage\cleardoublepage
+\newcommand{\clearemptydoublepage}{%
+  \clearpage
+  {\pagestyle{empty}\origdoublepage}%
+}
+\let\cleardoublepage\clearemptydoublepage
+
+
+
+%%%%%%%%%%%%%%%%
+%% Let's begin!
+%%%%%%%%%%%%%%%%
+\title{\mytitle}
+\author{$author}
+\date{\today}
+
+\begin{document}
+\maketitle
+% \tableofcontents
+
+
+This document was templated with Projy :-)
+
+% \include{content}
+
+
+%% bibliography
+% \nocite{*}
+% \bibliographystyle{apacite}
+% \bibliography{references}
+
+\end{document}

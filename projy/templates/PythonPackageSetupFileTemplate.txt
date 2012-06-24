@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+""" $project setup.py script """
+
+# system
+from distutils.core import setup
+from os.path import join, dirname
+
+
+setup(
+    name='$project',
+    version='0.1.0',
+    author='$author',
+    author_email='$author_email',
+    packages=['$project_lower','$project_lower.test'],
+    url='http://',
+    license='LICENSE.txt',
+    long_description=open(join(dirname(__file__), 'README.txt')).read(),
+    install_requires=[''],
+    test_suite='$project_lower.test',
+)

@@ -1,0 +1,7 @@
+include CHANGES.txt
+include LICENSE.txt
+include MANIFEST.in
+include README.txt
+recursive-include bin *
+recursive-include docs *
+recursive-include $project_lower *

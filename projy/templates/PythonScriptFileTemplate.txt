@@ -1,0 +1,31 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+    $project.py - $project Python script.
+    Created by $author on $date.
+"""
+
+import sys
+
+
+def parse_arguments():
+    """ Arguments parsing function. """
+    import argparse
+    parser = argparse.ArgumentParser(description='$project script.')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='increase output verbosity')
+    #parser.add_argument('argument',
+                        #help='An argument of the script.')
+
+    return parser.parse_args()
+
+
+def main():
+    """ Main function. """
+    args = parse_arguments()
+
+    print("[INFO] $project version 0.1, created by $author.")
+
+
+if __name__ == "__main__":
+    main()

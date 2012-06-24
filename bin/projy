@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""" Script launching the Projy main function. """
+
+from projy.cmdline import execute
+execute()

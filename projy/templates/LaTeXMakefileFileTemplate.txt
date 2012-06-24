@@ -1,0 +1,5 @@
+all:
+	latexmk -pdf $project.tex
+
+clean:
+	latexmk -C && rm -f $project.bbl
