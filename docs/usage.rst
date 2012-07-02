@@ -3,7 +3,7 @@
 Usage
 =====
 As an example, let's create a Python package. The Projy template mostly
-follows recommandations from `The Hitchhiker’s Guide to Packaging
+follows recommendations from `The Hitchhiker’s Guide to Packaging
 <http://guide.python-distribute.org/>`_.
 
 

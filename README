@@ -41,7 +41,7 @@ If you prefer git, that is ok too. You can get the very latest code at GitHub:
 Usage
 =====
 As an example, let's create a Python package. The Projy template mostly
-follows recommandations from
+follows recommendations from
 [The Hitchhiker's Guide to Packaging](http://guide.python-distribute.org/).
 
 
