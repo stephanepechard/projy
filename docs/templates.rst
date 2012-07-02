@@ -75,6 +75,21 @@ produces::
         TowelStuff.py           - PythonScriptFileTemplate
 
 
+Bootstrap
+^^^^^^^^^
+The command::
+
+    $ projy Bootstrap TowelStuff
+
+produces::
+
+    /
+        bootstrap               - BootstrapScriptFileTemplate
+
+Yes, the name has no impact on the produced file.
+Don't hesitate to make it short!
+
+
 Projy itself!
 ^^^^^^^^^^^^^
 Finally, a bit of a special template, which lets you create a Projy template

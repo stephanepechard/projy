@@ -13,7 +13,7 @@ from os.path import join, dirname
 
 config = {
     'name': 'Projy',
-    'version': '0.1.1',
+    'version': '0.1.2dev',
     'packages': ['projy', 'projy.templates', 'projy.collectors'],
     'description': 'Projy is a template-based skeleton generator.',
     'long_description': open(join(dirname(__file__), 'README')).read(),
