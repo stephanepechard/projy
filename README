@@ -92,6 +92,7 @@ The currently available templates are:
  * a Python package ;
  * a Python script ;
  * a Projy template, meta-style.
+ * a bootstrap file, to manage your virtualenv hapiness ;
 
 See the official doc for more details on created files into these templates.
 Soon to come, more templates around Django. Of course, anyone can propose
