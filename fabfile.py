@@ -20,12 +20,12 @@ def projy_version():
 
 def fast_commit(capture=True):
     env.warn_only = True
-    local('git commit -am"fast commit through fabric"')
+    local('git commit -am"fast commit through Fabric"')
 
 
 def push():
     """ Local git push. """
-    local("git push")
+    local("git push all")
 
 
 def deploy():
