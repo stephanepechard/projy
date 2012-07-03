@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 """ Projy template for a bootstrap project. """
 
-# system
-from datetime import date
 # parent class
 from projy.templates.ProjyTemplate import ProjyTemplate
-# collectors
-from projy.collectors.AuthorCollector import AuthorCollector
 
 
 class BootstrapTemplate(ProjyTemplate):
