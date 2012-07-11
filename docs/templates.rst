@@ -1,16 +1,16 @@
 Available templates
 ===================
-Here is a list of all the templates, but also collectors, integrated into
-Projy at the moment. Of course, anyone can propose new templates,
-they'll be integrated into Projy.
+Here is a list of all the templates, but also collectors,
+integrated into Projy at the moment. Of course, you can propose
+new templates, they'll be integrated into Projy.
 
 
 Project templates
 -----------------
-Project templates are used to create a files/directories structure. That's the
-second argument of the command line. For this list, the projects we create are
-all called ``TowelStuff``. They are ordered by the programming
-language they use.
+Project templates are used to create a files/directories structure.
+That's the second argument of the command line. For this list,
+the projects we create are all called ``TowelStuff``.
+They are somewhat ordered by the programming language they use.
 
 
 LaTeX
@@ -75,6 +75,21 @@ produces::
         TowelStuff.py           - PythonScriptFileTemplate
 
 
+Fabric file
+^^^^^^^^^^^
+The command::
+
+    $ projy Fabfile TowelStuff
+
+produces::
+
+    /
+        fabfile.py              - FabfileFileTemplate
+
+This one is probably not generic enough, I added some stuff I use.
+Feel free to customize it.
+
+
 Bootstrap
 ^^^^^^^^^
 The command::
@@ -124,6 +139,7 @@ Python files
 * :download:`PythonPackageMANIFESTFileTemplate <../projy/templates/PythonPackageMANIFESTFileTemplate.txt>`
 * :download:`PythonPackageSetupFileTemplate <../projy/templates/PythonPackageSetupFileTemplate.txt>`
 * :download:`PythonScriptFileTemplate <../projy/templates/PythonScriptFileTemplate.txt>`
+* :download:`FabfileFileTemplate <../projy/templates/FabfileFileTemplate.txt>`
 
 
 Bash files

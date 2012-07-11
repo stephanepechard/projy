@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""" Deployment of $project """
+
+# system
+import os, re
+# fabric
+from fabric.api import cd, env, execute, local, run, sudo, prefix
+
+
+def version():
+    """ Get version from setup.py file. """
+    version = '0.1'
+    with open(os.path.abspath('setup.py')) as f:
+        regex = re.compile(r"    'version': '(.*?)',", re.DOTALL)
+        for matched in regex.finditer(f.read()):
+            version = matched.group(1)
+    return version
+
+
+def fast_commit(capture=True):
+    """ Fast commit with generic message. """
+    env.warn_only = True
+    local('git commit -am"fast commit through Fabric"')
+
+
+def push():
+    """ Local git push. """
+    local("git push all")
+
+
+def commit_and_push():
+    """ Commit and push to git servers. """
+    execute(fast_commit)
+    execute(push)
+
+
+def pip_install():
+    """ Install the project to local virtualenv. """
+    local('if [ $(pip freeze | grep $project | wc -w ) -eq 1 ]; then '
+          'pip uninstall -q -y $project ; fi')
+    local('python setup.py sdist')
+    local('pip install -q dist/$project-' + version() + '.tar.gz')
+    local('rm -rf dist $project.egg-info')
+
+
+def pypi_upload():
+    local("python setup.py sdist upload")
+
