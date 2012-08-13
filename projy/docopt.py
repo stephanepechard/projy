@@ -1,7 +1,12 @@
-"""`docopt` lives on `GitHub <http://github.com/halst/docopt/>`_."""
-from copy import copy
 import sys
 import re
+
+
+# Python 3 Compatibility
+try:
+    basestring
+except NameError:
+    basestring = str
 
 
 class DocoptLanguageError(Exception):
@@ -112,7 +117,8 @@ class Argument(Pattern):
         args = [l for l in left if type(l) is Argument]
         if not len(args):
             return False, left, collected
-        left.remove(args[0])
+        pos = left.index(args[0])
+        left = left[:pos] + left[pos+1:]
         if type(self.value) is not list:
             return True, left, collected + [Argument(self.name, args[0].value)]
         same_name = [a for a in collected
@@ -139,7 +145,8 @@ class Command(Pattern):
         args = [l for l in left if type(l) is Argument]
         if not len(args) or args[0].value != self.name:
             return False, left, collected
-        left.remove(args[0])
+        pos = left.index(args[0])
+        left = left[:pos] + left[pos+1:]
         return True, left, collected + [Command(self.name, True)]
 
     def __repr__(self):
@@ -173,13 +180,14 @@ class Option(Pattern):
 
     def match(self, left, collected=None):
         collected = [] if collected is None else collected
-        left_ = []
+        left_, collected_ = [], []
         for l in left:
-            # if this is so greedy, how to handle OneOrMore then?
-            if not (type(l) is Option and
+            if (collected_ == [] and type(l) is Option and
                     (self.short, self.long) == (l.short, l.long)):
+                collected_.append(l)
+            else:
                 left_.append(l)
-        return (left != left_), left_, collected
+        return (left != left_), left_, collected + collected_
 
     @property
     def name(self):
@@ -194,16 +202,17 @@ class AnyOptions(Pattern):
 
     def match(self, left, collected=None):
         collected = [] if collected is None else collected
-        left_ = [l for l in left if not type(l) == Option]
-        return (left != left_), left_, collected
+        left_ = [l for l in left if type(l) != Option]
+        collected_ = [l for l in left if type(l) == Option]
+        return (left != left_), left_, collected + collected_
 
 
 class Required(Pattern):
 
     def match(self, left, collected=None):
         collected = [] if collected is None else collected
-        l = copy(left)
-        c = copy(collected)
+        l = left
+        c = collected
         for p in self.children:
             matched, l, c = p.match(l, c)
             if not matched:
@@ -215,7 +224,6 @@ class Optional(Pattern):
 
     def match(self, left, collected=None):
         collected = [] if collected is None else collected
-        left = copy(left)
         for p in self.children:
             m, left, collected = p.match(left, collected)
         return True, left, collected
@@ -226,8 +234,8 @@ class OneOrMore(Pattern):
     def match(self, left, collected=None):
         assert len(self.children) == 1
         collected = [] if collected is None else collected
-        l = copy(left)
-        c = copy(collected)
+        l = left
+        c = collected
         l_ = None
         matched = True
         times = 0
@@ -237,7 +245,7 @@ class OneOrMore(Pattern):
             times += 1 if matched else 0
             if l_ == l:
                 break
-            l_ = copy(l)
+            l_ = l
         if times >= 1:
             return True, l, c
         return False, left, collected
@@ -249,7 +257,7 @@ class Either(Pattern):
         collected = [] if collected is None else collected
         outcomes = []
         for p in self.children:
-            matched, _, _ = outcome = p.match(copy(left), copy(collected))
+            matched, _, _ = outcome = p.match(left, collected)
             if matched:
                 outcomes.append(outcome)
         if outcomes:
@@ -260,7 +268,7 @@ class Either(Pattern):
 class TokenStream(list):
 
     def __init__(self, source, error):
-        self += source.split() if type(source) is str else source
+        self += source.split() if isinstance(source, basestring) else source
         self.error = error
 
     def move(self):
@@ -273,7 +281,9 @@ class TokenStream(list):
 def parse_long(tokens, options):
     raw, eq, value = tokens.move().partition('=')
     value = None if eq == value == '' else value
-    opt = [o for o in options if o.long and o.long.startswith(raw)]
+    opt = [o for o in options if o.long and o.long == raw]
+    if tokens.error is DocoptExit and opt == []:
+        opt = [o for o in options if o.long and o.long.startswith(raw)]
     if len(opt) < 1:
         if tokens.error is DocoptExit:
             raise tokens.error('%s is not recognized' % raw)
@@ -284,7 +294,8 @@ def parse_long(tokens, options):
     if len(opt) > 1:
         raise tokens.error('%s is not a unique prefix: %s?' %
                          (raw, ', '.join('%s' % o.long for o in opt)))
-    opt = copy(opt[0])
+    o = opt[0]
+    opt = Option(o.short, o.long, o.argcount, o.value)
     if opt.argcount == 1:
         if value is None:
             if tokens.current() is None:
@@ -292,7 +303,7 @@ def parse_long(tokens, options):
             value = tokens.move()
     elif value is not None:
         raise tokens.error('%s must not have an argument' % opt.name)
-    opt.value = value or True
+    opt.value = value or True #(True if tokens.error is DocoptExit else False)
     return [opt]
 
 
@@ -314,10 +325,11 @@ def parse_shorts(tokens, options):
                 parsed.append(o)
                 raw = raw[1:]
                 continue
-        opt = copy(opt[0])
+        o = opt[0]
+        opt = Option(o.short, o.long, o.argcount, o.value)
         raw = raw[1:]
         if opt.argcount == 0:
-            value = True
+            value = True #if tokens.error is DocoptExit else False
         else:
             if raw == '':
                 if tokens.current() is None:
@@ -339,18 +351,15 @@ def parse_pattern(source, options):
 
 
 def parse_expr(tokens, options):
-    """expr ::= seq , ( '|' seq )* ;"""
+    """expr ::= seq ( '|' seq )* ;"""
     seq = parse_seq(tokens, options)
-
     if tokens.current() != '|':
         return seq
-
     result = [Required(*seq)] if len(seq) > 1 else seq
     while tokens.current() == '|':
         tokens.move()
         seq = parse_seq(tokens, options)
         result += [Required(*seq)] if len(seq) > 1 else seq
-
     return [Either(*result)] if len(result) > 1 else result
 
 
@@ -367,7 +376,7 @@ def parse_seq(tokens, options):
 
 
 def parse_atom(tokens, options):
-    """atom ::= '(' expr ')' | '[' expr ']' | '[' 'options' ']' | '--'
+    """atom ::= '(' expr ')' | '[' expr ']' | 'options'
              | long | shorts | argument | command ;
     """
     token = tokens.current()
@@ -380,14 +389,13 @@ def parse_atom(tokens, options):
         return result
     elif token == '[':
         tokens.move()
-        if tokens.current() == 'options':
-            result = [Optional(AnyOptions())]
-            tokens.move()
-        else:
-            result = [Optional(*parse_expr(tokens, options))]
+        result = [Optional(*parse_expr(tokens, options))]
         if tokens.move() != ']':
             raise tokens.error("Unmatched '['")
         return result
+    elif token == 'options':
+        tokens.move()
+        return [AnyOptions()]
     elif token.startswith('--') and token != '--':
         return parse_long(tokens, options)
     elif token.startswith('-') and token not in ('-', '--'):
@@ -398,9 +406,8 @@ def parse_atom(tokens, options):
         return [Command(tokens.move())]
 
 
-def parse_args(source, options):
+def parse_argv(source, options):
     tokens = TokenStream(source, DocoptExit)
-    options = copy(options)
     parsed = []
     while tokens.current() is not None:
         if tokens.current() == '--':
@@ -429,7 +436,8 @@ def printable_usage(doc):
 
 def formal_usage(printable_usage):
     pu = printable_usage.split()[1:]  # split and drop "usage:"
-    return ' '.join('|' if s == pu[0] else s for s in pu[1:])
+
+    return '( ' + ' '.join(') | (' if s == pu[0] else s for s in pu[1:]) + ' )'
 
 
 def extras(help, version, options, doc):
@@ -449,14 +457,13 @@ class Dict(dict):
 def docopt(doc, argv=sys.argv[1:], help=True, version=None):
     DocoptExit.usage = docopt.usage = usage = printable_usage(doc)
     pot_options = parse_doc_options(doc)
-    formal_pattern = parse_pattern(formal_usage(usage), options=pot_options)
-    argv = parse_args(argv, options=pot_options)
+    pattern = parse_pattern(formal_usage(usage), options=pot_options)
+    argv = parse_argv(argv, options=pot_options)
     extras(help, version, argv, doc)
-    matched, left, arguments = formal_pattern.fix().match(argv)
-    if matched and left == []:  # better message if left?
-        options = [o for o in argv if type(o) is Option]
-        pot_arguments = [a for a in formal_pattern.flat
+    matched, left, collected = pattern.fix().match(argv)
+    if matched and left == []:  # better error message if left?
+        pot_arguments = [a for a in pattern.flat
                          if type(a) in [Argument, Command]]
         return Dict((a.name, a.value) for a in
-                    (pot_options + options + pot_arguments + arguments))
+                    (pot_options + pot_arguments + collected))
     raise DocoptExit()
