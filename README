@@ -33,7 +33,7 @@ If no pip available, try ``easy_install``:
 
 Install from git
 ----------------
-If you prefer git, that is ok too. You can get the very latest code at GitHub:
+If you prefer git, that is ok too. You can get the very latest code at Github:
 
     $ git clone http://github.com/stephanepechard/projy
 
@@ -45,8 +45,8 @@ follows recommendations from
 [The Hitchhiker's Guide to Packaging](http://guide.python-distribute.org/).
 
 
-An example
-----------
+A simple example
+----------------
 Use simply:
 
     $ projy PythonPackage TowelStuff
@@ -74,20 +74,48 @@ functional, yet empty. Now, let's give a little explanation on each file.
 You can find [further information here](http://guide.python-distribute.org/creation.html).
 
 
+Specify substitutions
+---------------------
+You can specify template substitutions directly from the command line.
+Add them at the end of the previous example:
+
+    $ projy PythonPackage TowelStuff "author,Emmett Brown" "date,1851-09-24"
+
+Then the substitutes *author* and *date* (defaulted to the current day)
+are defined by the given values, not those computed by Projy.
+The format of such substitutions should be "key,value". Neither the 
+key or the value should therefore include a comma.
+Leading and trailing spaces are removed from both key and value.
+
+To know which substitutions can be overwritten this way, use the *-i*
+option as described in the dedicated section. You can add substitutions
+that are not listed with the *-i* but they won't have any effect if the
+template file does not consider them.
+
+
 Options
 -------
-Projy comes also with one command line option. Type:
+Projy comes with some command line options. Type:
 
     $ projy -l
 
 and you'll see the list of available templates in your installation.
 That's an easy way to copy/paste the name of the template you want to use next.
 
+Type
+
+    $ projy -i PythonPackage
+
+and you'll see the details of the Python package template. It shows
+the created directories and files, with the substitutions included in
+the template.
+
 
 Available templates
 ===================
 The currently available templates are:
 
+ * a [Fabric](http://fabfile.org) file ;
  * a LaTeX book ;
  * a Python package ;
  * a Python script ;
