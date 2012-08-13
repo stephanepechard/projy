@@ -9,7 +9,7 @@ class FabfileTemplate(ProjyTemplate):
     """ Projy template for a fabfile project. """
 
     def __init__(self):
-        self.project_name = None
+        ProjyTemplate.__init__(self)
 
 
     def files(self):

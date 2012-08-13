@@ -13,7 +13,7 @@ class LaTeXBookTemplate(ProjyTemplate):
     """ Projy template for a LaTeX project. """
 
     def __init__(self):
-        self.project_name = None
+        ProjyTemplate.__init__(self)
 
 
     def directories(self):

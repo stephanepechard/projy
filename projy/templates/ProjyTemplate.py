@@ -19,12 +19,22 @@ class ProjyTemplate:
     def __init__(self):
         self.project_name = None
         self.template_name = None
+        self.substitutes_dict = {}
 
 
-    def create(self, project_name, template_name):
+    def create(self, project_name, template_name, substitutions):
         """ Launch the project creation. """
         self.project_name = project_name
         self.template_name = template_name
+
+        # create substitutions dictionary from user arguments
+        # TODO: check what is given
+        for subs in substitutions:
+            current_sub = subs.split(',')
+            current_key = current_sub[0].strip()
+            current_val = current_sub[1].strip()
+            self.substitutes_dict[current_key] = current_val
+
         print(projy_info("Creating project '{0}' with template {1}"
               .format(projy_style(project_name, PROJY_PROJ), template_name)))
 
@@ -68,12 +78,15 @@ class ProjyTemplate:
         try:
             files = self.files()
         except AttributeError:
-            print(projy_info("No file in the template. Weird, but why not?"))
+            print(projy_info("No file in the template. "
+                             "Weird, but why not?"))
 
-        # get the substitutes from the template
-        substitutes = {}
+        # get the substitutes intersecting the template and the cli
         try:
-            substitutes = self.substitutes()
+            for key in self.substitutes().keys():
+                if key not in self.substitutes_dict:
+                    self.substitutes_dict[key] = self.substitutes()[key]
+
         except AttributeError:
             print(projy_info("No substitute in the template."))
 
@@ -103,7 +116,8 @@ class ProjyTemplate:
                 try:
                     with open(input_file, 'r') as line:
                         template_line = Template(line.read())
-                        output.write(template_line.safe_substitute(substitutes))
+                        output.write(template_line.
+                                safe_substitute(self.substitutes_dict))
                     output.close()
                 except IOError:
                     sys.exit(projy_error("Can't find template file: {0}"

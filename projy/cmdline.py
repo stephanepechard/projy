@@ -4,7 +4,7 @@
 # system
 import os
 import sys
-# local
+# local [--with=<key,value> ...]
 from projy import projy_style, projy_error, projy_info
 from projy import PROJY_DIR, PROJY_PROJ, PROJY_FILE
 
@@ -14,7 +14,7 @@ def docopt_arguments():
         See https://github.com/docopt/docopt """
     doc = """Projy: Create templated project.
 
-    Usage: projy <template> <project>
+    Usage: projy <template> <project> [<substitution>...]
            projy -i | --info <template>
            projy -l | --list
            projy -h | --help
@@ -75,6 +75,22 @@ def run_info(template):
 
         print('\t\t' + projy_style(file_name, PROJY_FILE) + template_name)
 
+    # print substitutions
+    try:
+        subs = template.substitutes().keys()
+        if len(subs) > 0:
+            subs.sort()
+            print('\n' + projy_info("Included substitutions are: "))
+            max_len = 0
+            for key in subs:
+                if max_len < len(key):
+                    max_len = len(key)
+            for key in subs:
+                print("\t{0:{1}} -> {2}".
+                format(key, max_len, template.substitutes()[key]))
+    except AttributeError:
+        pass
+
 
 def template_class_from_name(name):
     """ Return the template class object from agiven name. """
@@ -116,5 +132,7 @@ def execute():
         return
 
     # launch the template
-    template.create(args['<project>'], args['<template>'])
+    template.create(args['<project>'],
+                    args['<template>'],
+                    args['<substitution>'])
     print(projy_info("Done!"))

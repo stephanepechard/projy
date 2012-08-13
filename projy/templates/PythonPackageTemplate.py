@@ -14,7 +14,7 @@ class PythonPackageTemplate(ProjyTemplate):
     """ Projy template class for PythonPackage. """
 
     def __init__(self):
-        self.project_name = None
+        ProjyTemplate.__init__(self)
 
 
     def directories(self):

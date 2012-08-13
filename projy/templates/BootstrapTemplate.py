@@ -9,7 +9,7 @@ class BootstrapTemplate(ProjyTemplate):
     """ Projy template for a bootstrap project. """
 
     def __init__(self):
-        self.project_name = None
+        ProjyTemplate.__init__(self)
 
 
     def files(self):
