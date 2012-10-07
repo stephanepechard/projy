@@ -18,7 +18,19 @@ def projy_version():
     return version
 
 
+def build_doc():
+    """ Build the html documentation. """
+    local('cd docs/ && make html')
+
+
+def clean():
+    """ Remove temporary files. """
+    local('rm -rf docs/_build/ dist/ Projy.egg-info/')
+    local('find . -name "*.pyc" | xargs rm')
+
+
 def fast_commit(capture=True):
+    """ Perform fast commit. """
     env.warn_only = True
     local('git commit -am"fast commit through Fabric"')
 
@@ -34,14 +46,15 @@ def deploy():
     execute(push)
 
 
-def reinstall():
+def install():
     """ Reinstall the project to local virtualenv. """
     local('if [ $(pip freeze | grep Projy | wc -w ) -eq 1 ]; then '
           'pip uninstall -q -y Projy ; fi')
     local('python setup.py sdist')
     local('pip install -q dist/Projy-' + projy_version() + '.tar.gz')
-    local('rm -rf dist Projy.egg-info')
+    local('rm -rf dist/ Projy.egg-info/')
 
 
 def upload_pypi():
+    """ Upload current version to pypi. """
     local("python setup.py sdist register upload")

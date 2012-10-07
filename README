@@ -16,8 +16,8 @@ See [the complete documentation](http://projy.readthedocs.org/).
 
 Installation
 ============
-If you are familiar with Python, it is strongly suggested that you install
-Projy in [virtualenv](http://pypi.python.org/pypi/virtualenv).
+If you are familiar with Python, it is strongly suggested that you
+install Projy in [virtualenv](http://pypi.python.org/pypi/virtualenv).
 
 
 Pip and Distribute
@@ -33,7 +33,8 @@ If no pip available, try ``easy_install``:
 
 Install from git
 ----------------
-If you prefer git, that is ok too. You can get the very latest code at Github:
+If you prefer git, that is ok too. You can get the very latest code at
+Github:
 
     $ git clone http://github.com/stephanepechard/projy
 
@@ -69,9 +70,10 @@ In the same directory as you typed this command, you now have a
             __init__.py
 
 
-Each file has been created with a specific template, so the package is fully
-functional, yet empty. Now, let's give a little explanation on each file.
-You can find [further information here](http://guide.python-distribute.org/creation.html).
+Each file has been created with a specific template, so the package is
+fully functional, yet empty. Now, let's give a little explanation
+on each file. You can find [further
+information here](http://guide.python-distribute.org/creation.html).
 
 
 Specify substitutions
@@ -100,7 +102,8 @@ Projy comes with some command line options. Type:
     $ projy -l
 
 and you'll see the list of available templates in your installation.
-That's an easy way to copy/paste the name of the template you want to use next.
+That's an easy way to copy/paste the name of the template you want
+to use next.
 
 Type
 
@@ -116,12 +119,13 @@ Available templates
 The currently available templates are:
 
  * a [Fabric](http://fabfile.org) file ;
- * a LaTeX book ;
- * a Python package ;
+ * a [LaTeX](http://www.latex-project.org/) book ;
+ * a [Python](http://python.org/) package ;
  * a Python script ;
- * a Projy template, meta-style.
+ * a [Projy](https://github.com/stephanepechard/projy) template, meta-style.
  * a bootstrap file, to manage your virtualenv happiness ;
 
-See the official doc for more details on created files into these templates.
-Soon to come, more templates around Django. Of course, anyone can propose
-some templates, they'll be integrated into Projy.
+See the official doc for more details on created files into these
+templates. Soon to come, more templates around Django. Of course, 
+anyone can propose some templates, they'll be integrated into Projy.
+
