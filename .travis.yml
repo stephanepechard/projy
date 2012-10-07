@@ -4,5 +4,7 @@ python:
 "2.7"
 "3.2"
 # command to install dependencies
-install: "pip install nose pylint sphinx fabric --use-mirrors"
+install: "pip install sphinx fabric --use-mirrors"
+# install
+script: python setup.py install
 
