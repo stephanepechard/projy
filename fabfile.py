@@ -65,3 +65,13 @@ def md2rst(in_file, out_file, pipe):
 
 def readme():
     md2rst('README.md', 'README.txt', '| head -n -7')
+
+
+def tests():
+    """ Launch tests. """
+    local("nosetests")
+    # local("coverage html -d /tmp/coverage-projy --omit='projy/docopt.py'")
+    # local("coverage erase")
+
+
+
