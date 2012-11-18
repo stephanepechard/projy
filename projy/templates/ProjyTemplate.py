@@ -8,8 +8,7 @@ import sys
 from string import Template
 from os.path import join, dirname
 # local
-from projy import projy_style, projy_error, projy_info
-from projy import PROJY_DIR, PROJY_PROJ, PROJY_FILE
+from projy.TerminalView import *
 
 
 
@@ -20,6 +19,7 @@ class ProjyTemplate:
         self.project_name = None
         self.template_name = None
         self.substitutes_dict = {}
+        self.term = TerminalView()
 
 
     def create(self, project_name, template_name, substitutions):
@@ -35,8 +35,8 @@ class ProjyTemplate:
             current_val = current_sub[1].strip()
             self.substitutes_dict[current_key] = current_val
 
-        print(projy_info("Creating project '{0}' with template {1}"
-              .format(projy_style(project_name, PROJY_PROJ), template_name)))
+        self.term.print_info("Creating project '{0}' with template {1}"
+            .format(self.term.text_in_color(project_name, TERM_PINK), template_name))
 
         self.make_directories()
         self.make_files()
@@ -50,7 +50,7 @@ class ProjyTemplate:
         try:
             directories = self.directories()
         except AttributeError:
-            print(projy_info("No directory in the template."))
+            self.term.print_info("No directory in the template.")
 
         working_dir = os.getcwd()
         # iteratively create the directories
@@ -63,11 +63,11 @@ class ProjyTemplate:
                     if error.errno != errno.EEXIST:
                         raise
             else:
-                sys.exit(projy_error("The directory {0} already exists."
-                         .format(directory)))
+                self.term.print_error_and_exit("The directory {0} already exists."
+                         .format(directory))
 
-            print(projy_info("Creating directory '{0}'"
-                             .format(projy_style(directory, PROJY_DIR))))
+            self.term.print_info("Creating directory '{0}'"
+                                 .format(self.term.text_in_color(directory, TERM_GREEN)))
 
 
     def make_files(self):
@@ -78,8 +78,7 @@ class ProjyTemplate:
         try:
             files = self.files()
         except AttributeError:
-            print(projy_info("No file in the template. "
-                             "Weird, but why not?"))
+            self.term.print_info("No file in the template. Weird, but why not?")
 
         # get the substitutes intersecting the template and the cli
         try:
@@ -88,7 +87,7 @@ class ProjyTemplate:
                     self.substitutes_dict[key] = self.substitutes()[key]
 
         except AttributeError:
-            print(projy_info("No substitute in the template."))
+            self.term.print_info("No substitute in the template.")
 
         working_dir = os.getcwd()
         # iteratively create the files
@@ -104,8 +103,8 @@ class ProjyTemplate:
             try:
                 output = open(filepath, 'w')
             except IOError:
-                sys.exit(projy_error("Can't create destination file: {0}"
-                         .format(filepath)))
+                self.term.print_error_and_exit("Can't create destination"\
+                                                " file: {0}".format(filepath))
 
             # open the template to read from
             if template_file:
@@ -120,10 +119,10 @@ class ProjyTemplate:
                                 safe_substitute(self.substitutes_dict))
                     output.close()
                 except IOError:
-                    sys.exit(projy_error("Can't find template file: {0}"
-                             .format(input_file)))
+                    self.term.print_error_and_exit("Can't create template file"\
+                                                   ": {0}".format(input_file))
             else:
                 output.close() # the file is empty, but still created
 
-            print(projy_info("Creating file '{0}'"
-                             .format(projy_style(filename, PROJY_FILE))))
+            self.term.print_info("Creating file '{0}'"
+                             .format(self.term.text_in_color(filename, TERM_YELLOW)))

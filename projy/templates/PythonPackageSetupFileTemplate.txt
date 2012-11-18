@@ -1,20 +1,31 @@
 # -*- coding: utf-8 -*-
 """ $project setup.py script """
 
+# $project
+from $project_lower import __version__
+
 # system
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 from os.path import join, dirname
 
 
 setup(
-    name='$project',
+    name=__version__,
     version='0.1.0',
+    description='My $project project',
     author='$author',
     author_email='$author_email',
     packages=['$project_lower','$project_lower.test'],
-    url='http://',
-    license='LICENSE.txt',
-    long_description=open(join(dirname(__file__), 'README.txt')).read(),
+    url='http://stephanepechard.github.com/projy',
+    long_description=open('README.txt').read(),
     install_requires=[''],
     test_suite='$project_lower.test',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Programming Language :: Python',
+      ],
 )

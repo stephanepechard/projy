@@ -6,16 +6,8 @@
 import os, re
 # fabric
 from fabric.api import cd, env, execute, local, run, sudo, prefix
-
-
-def version():
-    """ Get version from setup.py file. """
-    version = '0.1'
-    with open(os.path.abspath('setup.py')) as f:
-        regex = re.compile(r"    'version': '(.*?)',", re.DOTALL)
-        for matched in regex.finditer(f.read()):
-            version = matched.group(1)
-    return version
+# $project
+from $project_lower import __version__
 
 
 def fast_commit(capture=True):
@@ -29,21 +21,47 @@ def push():
     local("git push all")
 
 
-def commit_and_push():
+def deploy():
     """ Commit and push to git servers. """
     execute(fast_commit)
     execute(push)
 
 
-def pip_install():
-    """ Install the project to local virtualenv. """
+def reinstall():
+    """ Reinstall the project to local virtualenv. """
     local('if [ $(pip freeze | grep $project | wc -w ) -eq 1 ]; then '
           'pip uninstall -q -y $project ; fi')
     local('python setup.py sdist')
-    local('pip install -q dist/$project-' + version() + '.tar.gz')
+    local('pip install -q dist/$project-' + __version__ + '.tar.gz')
     local('rm -rf dist $project.egg-info')
 
 
-def pypi_upload():
+def install():
+    """ Install the project. """
+    local('python setup.py install')
+    local('rm -rf build')
+
+
+def build_doc():
+    """ Build the html documentation. """
+    local('cd docs/ && make html')
+
+
+def clean():
+    """ Remove temporary files. """
+    local('rm -rf docs/_build/ dist/ *.egg-info/')
+    local('find . -name "*.pyc" | xargs rm')
+
+
+def upload():
+    """ Upload Pypi. """
     local("python setup.py sdist upload")
 
+
+def md2rst(in_file, out_file):
+    """ Generate reStructuredText from Makrdown. """
+    local("pandoc -f markdown -t rst %s -o %s" % (in_file, out_file))
+
+
+def readme():
+    md2rst('README.md', 'README.txt')

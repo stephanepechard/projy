@@ -5,3 +5,5 @@ include README.txt
 recursive-include bin *
 recursive-include docs *
 recursive-include $project_lower *
+global-exclude *.pyc
+global-exclude *.pyo

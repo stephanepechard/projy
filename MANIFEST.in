@@ -1,10 +1,12 @@
 include CHANGES.txt
 include LICENSE.txt
 include MANIFEST.in
-include README
+include README.txt
 recursive-include bin *
 recursive-include docs *
 recursive-include projy/collectors *.py
 recursive-include projy/templates *.py
 recursive-include projy/templates *.txt
 recursive-include projy/tests *
+global-exclude *.pyc
+global-exclude *.pyo

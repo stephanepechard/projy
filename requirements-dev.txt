@@ -1,0 +1,6 @@
+blessings
+fabric
+nose
+coverage
+ipdb
+sphinx

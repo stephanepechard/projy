@@ -6,27 +6,8 @@
 import os, re
 # fabric
 from fabric.api import cd, env, execute, local, run, sudo, prefix
-
-
-def projy_version():
-    """ Get version from setup.py file. """
-    version = '0.1'
-    with open(os.path.abspath('setup.py')) as f:
-        regex = re.compile(r"    'version': '(.*?)',", re.DOTALL)
-        for matched in regex.finditer(f.read()):
-            version = matched.group(1)
-    return version
-
-
-def build_doc():
-    """ Build the html documentation. """
-    local('cd docs/ && make html')
-
-
-def clean():
-    """ Remove temporary files. """
-    local('rm -rf docs/_build/ dist/ Projy.egg-info/')
-    local('find . -name "*.pyc" | xargs rm')
+# projy
+from projy import __version__
 
 
 def fast_commit(capture=True):
@@ -46,15 +27,41 @@ def deploy():
     execute(push)
 
 
-def install():
+def reinstall():
     """ Reinstall the project to local virtualenv. """
     local('if [ $(pip freeze | grep Projy | wc -w ) -eq 1 ]; then '
           'pip uninstall -q -y Projy ; fi')
     local('python setup.py sdist')
-    local('pip install -q dist/Projy-' + projy_version() + '.tar.gz')
+    local('pip install -q dist/Projy-' + __version__ + '.tar.gz')
     local('rm -rf dist/ Projy.egg-info/')
 
 
-def upload_pypi():
-    """ Upload current version to pypi. """
-    local("python setup.py sdist register upload")
+def install():
+    """ Install the project. """
+    local('python setup.py install')
+    local('rm -rf build')
+
+
+def build_doc():
+    """ Build the html documentation. """
+    local('cd docs/ && make html')
+
+
+def clean():
+    """ Remove temporary files. """
+    local('rm -rf docs/_build/ dist/ Projy.egg-info/')
+    local('find . -name "*.pyc" | xargs rm')
+
+
+def upload():
+    """ Upload Pypi. """
+    local("python setup.py sdist upload")
+
+
+def md2rst(in_file, out_file, pipe):
+    """ Generate reStructuredText from Makrdown. """
+    local("pandoc -f markdown -t rst %s %s > %s" % (in_file, pipe, out_file))
+
+
+def readme():
+    md2rst('README.md', 'README.txt', '| head -n -7')

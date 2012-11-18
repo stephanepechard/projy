@@ -1,5 +1,33 @@
-v0.1.2 (2012-07-03) -- New Bootstrap template
+.. _changelog-label:
 
-v0.1.1 (2012-06-24) -- Minor fix
+Changelog
+=========
 
-v0.1   (2012-06-24) -- Initial release
+0.3 (2012-11-18)
+------------------
+* Update templates
+* Use blessings to print text
+* Update project to same file organisation as appypi
+* Add requirement files
+* New README.txt file
+* Add tests suite, to be continued...
+
+
+0.2 (2012-08-14)
+------------------
+* More documentation
+
+
+0.1.2 (2012-07-03)
+------------------
+* New Bootstrap template
+
+
+0.1.1 (2012-06-24)
+------------------
+* Minor fix
+
+
+0.1 (2012-06-24)
+----------------
+* Initial release
