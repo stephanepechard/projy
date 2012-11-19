@@ -28,12 +28,5 @@ Content
    usage
    templates
    extend
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   changelog
 

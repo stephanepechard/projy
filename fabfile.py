@@ -44,7 +44,7 @@ def install():
 
 def build_doc():
     """ Build the html documentation. """
-    local('cd docs/ && make html')
+    local('cd docs/ && make html && cd _build/html && zip -9 -T -r ../Projy-' + __version__ + '.zip *')
 
 
 def clean():
