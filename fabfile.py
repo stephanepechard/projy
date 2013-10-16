@@ -48,7 +48,7 @@ def md2rst(in_file, out_file, pipe):
 
 
 def readme():
-    md2rst('README.md', 'README.txt', '| head -n -7')
+    md2rst('README.md', 'README.txt', '| head -n -6 | tail -n +3')
 
 
 def build_doc():
