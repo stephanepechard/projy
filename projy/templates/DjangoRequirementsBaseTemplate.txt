@@ -1,0 +1,10 @@
+celery
+celery-with-redis
+cssmin
+django
+django-celery
+django-htmlmin
+fabric
+gunicorn
+psycopg2
+unipath

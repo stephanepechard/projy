@@ -1,0 +1,11 @@
+all: dev
+
+venv:
+	[ -e venv/bin/pip ] || virtualenv venv
+
+dev: venv
+	./venv/bin/pip install -r conf/requirements_dev.txt
+
+production: venv
+	./venv/bin/pip install -r conf/requirements_production.txt
+

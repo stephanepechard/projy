@@ -1,0 +1,17 @@
+[program:$project_lower_django]
+command=/home/$project_lower/$project_lower/venv/bin/python /home/$project_lower/$project_lower/venv/bin/gunicorn --bind 127.0.0.1:8001 --workers=2 --pid=/tmp/$project_lower.pid $project_lower.wsgi:application
+directory = /home/$project_lower/$project_lower
+user = $project_lower
+autostart = true
+autorestart = true
+stdout_logfile = /home/$project_lower/logs/gunicorn.stdout.log
+stderr_logfile = /home/$project_lower/logs/gunicorn.stderr.log
+
+[program:$project_lower_celery]
+command=/home/$project_lower/$project_lower/venv/bin/python manage.py celery worker -B --loglevel=info --settings=$project_lower.settings.production
+directory = /home/$project_lower/$project_lower
+user = $project_lower
+autostart = true
+autorestart = true
+stdout_logfile = /home/$project_lower/logs/celery.stdout.log
+stderr_logfile = /home/$project_lower/logs/celery.stderr.log

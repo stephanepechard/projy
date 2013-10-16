@@ -1,0 +1,39 @@
+server {
+    server_name $project_lower.org;
+
+    keepalive_timeout 5;
+
+    access_log /home/$project_lower/logs/nginx_access.log;
+    error_log /home/$project_lower/logs/nginx_error.log;
+
+    root /home/$project_lower/$project_lower;
+
+    location / {
+        proxy_pass       http://127.0.0.1:8001;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+    }
+
+    # the static stuff
+    location /static {
+        alias /home/$project_lower/static_root/;
+    }
+
+    # favicon
+    location /favicon.ico {
+        rewrite (.*) /static/favicon.png;
+    }
+
+    # the admin media
+    location ~ /admin {
+        # restrict to local access
+        allow 192.168.0.0/24;
+        deny all;
+        # same as for /
+        proxy_pass       http://127.0.0.1:8001;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+    }
+}

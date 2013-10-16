@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""" Fabric file for $project """
+
+# system
+import os, re
+# fabric
+from fabric.api import cd, env, execute, local, run, sudo, prefix
+
+
+# conf
+env.user = '$project_lower'
+env.hosts = ['']
+env.directory = '/home/$project_lower/$project_lower/'
+env_bin_dir = env.directory + 'venv/bin/'
+
+
+def commit(message= "fast commit through Fabric", capture=True):
+    """ git commit with common commit message when omit. """
+    env.warn_only = True
+    local('git commit -am"{}"'.format(message))
+
+
+def push():
+    """ Local git push. """
+    local("git push")
+
+
+def prepare_deploy():
+    """ Commit and push to git servers. """
+    execute(commit)
+    execute(push)
+
+
+def deploy():
+    with cd(env.directory):
+        run("git pull")
+
+
+def tests(environment):
+    """ Launch tests. """
+    local("venv/bin/python manage.py --settings=$project.settings." + environment)
+    local("coverage html -i -d /tmp/coverage-$project_lower")
+    local("coverage erase")
+
+
+def runserver(environment):
+    """ Run the server with the specified environment settings. """
+    local("venv/bin/python manage.py runserver --settings=$project.settings." + environment)
+
+
+def collect():
+    """ Collect static files."""
+    with cd(env.directory):
+        with path(env_bin_dir, behavior='prepend'):
+            run('python manage.py collectstatic -v 3 --link --clear --noinput --settings=$project.settings.production')
+
+
+def restart():
+    sudo('supervisorctl restart $project_django')
+    sudo('supervisorctl restart $project_celery')
+    sudo('/etc/init.d/nginx reload')
