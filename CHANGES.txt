@@ -1,7 +1,11 @@
-.. _changelog-label:
-
 Changelog
 =========
+
+0.4 (2013-10-15)
+----------------
+* Add post hook to run python commands after template completion
+* Add full Django project template following most recommandations of 'Two Scoops of Django'
+
 
 0.3 (2012-11-18)
 ------------------

@@ -3,10 +3,12 @@
 
 # system
 import errno
+import io
 import os
-import sys
-from string import Template
 from os.path import join, dirname
+import shutil
+import tempfile
+from string import Template
 # local
 from projy.TerminalView import *
 
@@ -35,11 +37,12 @@ class ProjyTemplate:
             current_val = current_sub[1].strip()
             self.substitutes_dict[current_key] = current_val
 
-        self.term.print_info("Creating project '{0}' with template {1}"
+        self.term.print_info(u"Creating project '{0}' with template {1}"
             .format(self.term.text_in_color(project_name, TERM_PINK), template_name))
 
         self.make_directories()
         self.make_files()
+        self.make_posthook()
 
 
     def make_directories(self):
@@ -50,7 +53,7 @@ class ProjyTemplate:
         try:
             directories = self.directories()
         except AttributeError:
-            self.term.print_info("No directory in the template.")
+            self.term.print_info(u"No directory in the template.")
 
         working_dir = os.getcwd()
         # iteratively create the directories
@@ -63,10 +66,10 @@ class ProjyTemplate:
                     if error.errno != errno.EEXIST:
                         raise
             else:
-                self.term.print_error_and_exit("The directory {0} already exists."
+                self.term.print_error_and_exit(u"The directory {0} already exists."
                          .format(directory))
 
-            self.term.print_info("Creating directory '{0}'"
+            self.term.print_info(u"Creating directory '{0}'"
                                  .format(self.term.text_in_color(directory, TERM_GREEN)))
 
 
@@ -78,7 +81,7 @@ class ProjyTemplate:
         try:
             files = self.files()
         except AttributeError:
-            self.term.print_info("No file in the template. Weird, but why not?")
+            self.term.print_info(u"No file in the template. Weird, but why not?")
 
         # get the substitutes intersecting the template and the cli
         try:
@@ -87,7 +90,7 @@ class ProjyTemplate:
                     self.substitutes_dict[key] = self.substitutes()[key]
 
         except AttributeError:
-            self.term.print_info("No substitute in the template.")
+            self.term.print_info(u"No substitute in the template.")
 
         working_dir = os.getcwd()
         # iteratively create the files
@@ -103,7 +106,7 @@ class ProjyTemplate:
             try:
                 output = open(filepath, 'w')
             except IOError:
-                self.term.print_error_and_exit("Can't create destination"\
+                self.term.print_error_and_exit(u"Can't create destination"\
                                                 " file: {0}".format(filepath))
 
             # open the template to read from
@@ -119,10 +122,49 @@ class ProjyTemplate:
                                 safe_substitute(self.substitutes_dict))
                     output.close()
                 except IOError:
-                    self.term.print_error_and_exit("Can't create template file"\
+                    self.term.print_error_and_exit(u"Can't create template file"\
                                                    ": {0}".format(input_file))
             else:
                 output.close() # the file is empty, but still created
 
-            self.term.print_info("Creating file '{0}'"
+            self.term.print_info(u"Creating file '{0}'"
                              .format(self.term.text_in_color(filename, TERM_YELLOW)))
+
+
+    def make_posthook(self):
+        """ Run the post hook into the project directory. """
+        if self.posthook:
+            os.chdir(self.project_name) # enter the project main directory
+            self.posthook()
+
+
+    def replace_in_file(self, file_path, old_exp, new_exp):
+        """ In the given file, replace all 'old_exp' by 'new_exp'. """
+        self.term.print_info(u"Making replacement into {}"
+                                 .format(self.term.text_in_color(file_path,
+                                                                 TERM_GREEN)))
+        # write the new version into a temporary file
+        tmp_file = tempfile.NamedTemporaryFile(mode='w+t', delete=False)
+        for filelineno, line in enumerate(io.open(file_path, encoding="utf-8")):
+            if old_exp in line:
+                line = line.replace(old_exp, new_exp)
+            tmp_file.write(line.encode('utf-8'))
+
+        name = tmp_file.name # keep the name
+        tmp_file.close()
+        shutil.copy(name, file_path) # replace the original one
+        os.remove(name)
+
+        # old version, not suitable with utf-8...
+        #for line in fileinput.input(file_path, inplace=1):
+            #if old_exp in line:
+                #line = line.replace(old_exp, new_exp)
+            ## write inline into the file (comma at the end is Python2 specific!)
+            #print(line),
+
+
+    def touch(self, filename):
+        """ A simple equivalent of the well known shell 'touch' command. """
+        with file(filename, 'a'):
+            os.utime(filename, None)
+

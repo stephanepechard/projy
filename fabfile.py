@@ -10,52 +10,36 @@ from fabric.api import cd, env, execute, local, run, sudo, prefix
 from projy import __version__
 
 
-def fast_commit(capture=True):
-    """ Perform fast commit. """
+def commit(message= u"fast commit through Fabric", capture=True):
+    """ git commit with common commit message when omit. """
     env.warn_only = True
-    local('git commit -am"fast commit through Fabric"')
+    local(u'git commit -am"{}"'.format(message))
 
 
 def push():
     """ Local git push. """
-    local("git push all")
+    local("git push")
 
 
 def deploy():
     """ Commit and push to git servers. """
-    execute(fast_commit)
+    execute(commit)
     execute(push)
 
 
 def reinstall():
     """ Reinstall the project to local virtualenv. """
     local('if [ $(pip freeze | grep Projy | wc -w ) -eq 1 ]; then '
-          'pip uninstall -q -y Projy ; fi')
-    local('python setup.py sdist')
-    local('pip install -q dist/Projy-' + __version__ + '.tar.gz')
+          './venv/bin/pip uninstall -q -y Projy ; fi')
+    local('./venv/bin/python setup.py sdist')
+    local('./venv/bin/pip install -q dist/Projy-' + __version__ + '.tar.gz')
     local('rm -rf dist/ Projy.egg-info/')
 
 
 def install():
     """ Install the project. """
-    local('python setup.py install')
+    local('./venv/bin/python setup.py install')
     local('rm -rf build')
-
-
-def build_doc():
-    """ Build the html documentation. """
-    local('cd docs/ && make html && cd _build/html && zip -9 -T -r ../Projy-' + __version__ + '.zip *')
-
-
-def clean():
-    """ Remove temporary files. """
-    local('rm -rf docs/_build/ dist/ Projy.egg-info/')
-    local('find . -name "*.pyc" | xargs rm')
-
-
-def upload():
-    """ Upload Pypi. """
-    local("python setup.py sdist upload")
 
 
 def md2rst(in_file, out_file, pipe):
@@ -67,6 +51,17 @@ def readme():
     md2rst('README.md', 'README.txt', '| head -n -7')
 
 
+def build_doc():
+    """ Build the html documentation. """
+    local('cd docs/ && make html')
+    local('cd docs/_build/html && zip -9 -T -r ../Projy-' + __version__ + '.zip *')
+    local('cat docs/changelog.rst | tail -n +3 > CHANGES.txt')
+
+
+def watch_doc():
+    local('venv/bin/watchmedo shell-command --patterns="docs/*.rst" --command="fab build_doc" ./docs/')
+
+
 def tests():
     """ Launch tests. """
     local("nosetests")
@@ -74,4 +69,12 @@ def tests():
     # local("coverage erase")
 
 
+def clean():
+    """ Remove temporary files. """
+    local('rm -rf docs/_build/ dist/ Projy.egg-info/')
+    local('find . -name "*.pyc" | xargs rm')
 
+
+def upload():
+    """ Upload Pypi. """
+    local("python setup.py sdist upload")

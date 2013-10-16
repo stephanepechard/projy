@@ -71,8 +71,7 @@ In the same directory as you typed this command, you now have a
 
 
 Each file has been created with a specific template, so the package is
-fully functional, yet empty. Now, let's give a little explanation
-on each file. You can find [further
+fully functional, yet empty. You can find [further
 information here](http://guide.python-distribute.org/creation.html).
 
 
@@ -118,6 +117,8 @@ Available templates
 ===================
 The currently available templates are:
 
+ * a full [Django](http://djangoproject.com) project, following most of the
+ recommandations from [Two scoops of Django](https://2scoops.org/) ;
  * a [Fabric](http://fabfile.org) file ;
  * a [LaTeX](http://www.latex-project.org/) book ;
  * a [Python](http://python.org/) package ;

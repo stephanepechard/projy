@@ -14,9 +14,10 @@ Here is the project template used to create a Python package:
    :linenos:
 
 
-To write a new template, you have to specify four parts:
+To write a new template, you have to specify five parts:
     * the name of the template, which is the name of the class ;
-    * the ``directories``, ``files`` and ``substitutes`` functions.
+    * the ``directories``, ``files``, ``substitutes`` and ``posthook``
+      functions.
 
 When writing a new template, you can use the ``self.project_name`` variable
 which contains the name of the project as you typed it.
@@ -25,8 +26,8 @@ In our example, it is ``TowelStuff``.
 
 Name of the template
 ^^^^^^^^^^^^^^^^^^^^
-Here it is simply ``PythonPackageTemplate``. This is the name you
-type in the command line plus ``Template`` at the end. The created template
+Here it is simply ``PythonPackageTemplate``. This is the name you type in the
+command line concatenated with ``Template`` at the end. The created template
 inherits from the father of all templates, the ``ProjyTemplate`` class.
 
 
@@ -73,14 +74,22 @@ The *substitutes* function
     This function should return a dictionary containing the string substitutions
     used in the template.
 
-   :rtype: list of file names
+   :rtype: dictionary of substitutions
 
 In our example, the substitutions made in all the created files are:
     * ``$project`` is replaced by ``TowelStuff`` ;
     * ``$project_lower`` is replaced by ``towelstuff`` ;
-    * ``$date`` is replaced by the current date, in the format 2012-11-23 ;
+    * ``$date`` is replaced by the current date, in the format 2013-11-23 ;
     * ``$author`` is replaced by what returns the ``AuthorCollector`` ;
     * ``$author_email`` is replaced by what returns the ``AuthorMailCollector`` ;
+
+
+The *posthook* function
+^^^^^^^^^^^^^^^^^^^^
+.. function:: posthook()
+
+    This function contains any post commands you need to be done on your
+    project. Its implementation is not mandatory.
 
 
 File templates

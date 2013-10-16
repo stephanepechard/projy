@@ -22,7 +22,22 @@ the latest code at `Github <http://github.com/stephanepechard/projy>`_::
 
     $ git clone http://github.com/stephanepechard/projy
 
-Then create the local virtualenv and install Projy::
+Then create the local virtualenv and install Projy into it::
 
-    $ cd projy && source bootstrap && fab install
+    $ cd projy && make && ./venv/bin/fab install
 
+There's also an easy::
+
+    $ ./venv/bin/fab reinstall
+
+to reinstall the local version of Projy, for quick testing.
+
+
+Read the full manual
+--------------------
+
+To build the manual::
+
+    $ ./venv/bin/fab build_doc
+
+The HTML pages are then in the ``projy/docs/_build/html/`` directory.

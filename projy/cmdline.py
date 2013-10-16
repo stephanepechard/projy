@@ -56,7 +56,7 @@ def run_info(template):
     template.project_name = 'TowelStuff' # fake project name, always the same
     name = template_name_from_class_name(template.__class__.__name__)
     term = TerminalView()
-    term.print_info("Content of template {0} with an example project " \
+    term.print_info("Content of template {} with an example project " \
           "named 'TowelStuff':".format(term.text_in_color(name, TERM_GREEN)))
 
     dir_name = None
@@ -79,13 +79,13 @@ def run_info(template):
         subs = template.substitutes().keys()
         if len(subs) > 0:
             subs.sort()
-            term.print_info("\nIncluded substitutions are: ")
+            term.print_info("\nSubstitutions of this template are: ")
             max_len = 0
             for key in subs:
                 if max_len < len(key):
                     max_len = len(key)
             for key in subs:
-                term.print_info("\t{0:{1}} -> {2}".
+                term.print_info(u"\t{0:{1}} -> {2}".
                 format(key, max_len, template.substitutes()[key]))
     except AttributeError:
         pass
@@ -100,13 +100,13 @@ def template_class_from_name(name):
         __import__('projy.templates.' + template_name)
         template_mod = sys.modules['projy.templates.' + template_name]
     except ImportError:
-        term.print_error_and_exit("Unable to find {0}".format(name))
+        term.print_error_and_exit("Unable to find {}".format(name))
 
     # import the class from the module
     try:
         template_class = getattr(template_mod, template_name)
     except AttributeError:
-        term.print_error_and_exit("Unable to create a template {0}".format(name))
+        term.print_error_and_exit("Unable to create a template {}".format(name))
     return template_class()
 
 

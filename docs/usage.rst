@@ -2,19 +2,18 @@
 
 Usage
 =====
-As an example, let's create a Python package. The Projy template mostly
-follows recommendations from `The Hitchhiker’s Guide to Packaging
-<http://guide.python-distribute.org/>`_.
-
+As an example, let's create some projects as the ones you usually work on.
 
 A Python package example
 ------------------------
+First is a Python package. The Projy template mostly follows recommendations
+from `The Hitchhiker’s Guide to Packaging <http://guide.python-distribute.org/>`_.
 Use simply::
 
     $ projy PythonPackage TowelStuff
 
 In the same directory as you typed this command, you now have a
-*TowelStuff* directory, with the following structure::
+*TowelStuff* directory, with the following structure of files and directories::
 
 
     TowelStuff/
@@ -33,13 +32,13 @@ In the same directory as you typed this command, you now have a
 
 Each file has been created with a specific template, so the package is
 fully functional, yet empty. Now, let's give a little explanation
-on each file. You can find `further information
+on each component. You can find `further information
 here <http://guide.python-distribute.org/creation.html>`_.
 
 
 *bin/*, *docs/* and *towelstuff/* directories
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Three directories are created by default:
+Three directories are created by this project template:
  * `bin/ <http://guide.python-distribute.org/creation.html#bin-description>`_
    contains your package's scripts ;
  * `docs/ <http://guide.python-distribute.org/creation.html#docs-description>`_,
@@ -129,7 +128,7 @@ file created from the template contains:
         name='TowelStuff',
         version='0.1.0',
         author='Stéphane Péchard',
-        author_email='stephanepechard@provider.com',
+        author_email='you@provider.com',
         packages=['towelstuff','towelstuff.test'],
         url='http://',
         license='LICENSE.txt',
@@ -138,9 +137,11 @@ file created from the template contains:
         test_suite='towelstuff.test',
     )
 
+Look at how the content is filled with your own data (names, author, mail).
 
-A more elaborate example: customizing the substitutions
--------------------------------------------------------
+
+Customized substitutions
+^^^^^^^^^^^^^^^^^^^^^^^^
 You can modify the substitutions used by the template through the
 command line::
 
@@ -157,6 +158,35 @@ To know which substitutions can be overwritten this way, use the ``-i``
 option as described in the dedicated section. You can add substitutions
 that are not listed with the ``-i`` option but **they won't have
 any effect if the template file does not consider them.**
+
+
+A full "scooped" Django project
+-------------------------------
+Starting with version 0.4, Projy includes somes post-project creation
+capabilities, that allows you to make almost anything you want after the
+files structure has been generated. Let see this with the first template
+using this, the `Django <https://djangoproject.com>`_ project template.
+Nothing changed in the command, you type::
+
+    $ projy DjangoTemplate FunWebsite
+
+Now, not only the Django template is used to create the project structure,
+but once it is done, a hook is called to do the following:
+
+ - build the `virtual environment <http://www.virtualenv.org/>`_ through
+   the use of the ``Makefile`` file;
+ - create the ``FunWebsite`` Django project with
+   the ``django-admin.py startproject`` command and the Django binary
+   installed in the virtual environment ;
+ - separate the original ``settings.py`` file into three different settings
+   files, following recommendations from `Two scoops of Django 
+   <https://2scoops.org/>`_ ;
+ - initiate an empty `git <https://git-scm.com>`_ repository ;
+ - do some minor adjustments to get the project as I'm used to.
+
+This hook helps crafting a very customized Django project tree structure.
+It is made of Python commands and automatically run into the project
+directory. What it does is defined into the Django project template.
 
 
 Options

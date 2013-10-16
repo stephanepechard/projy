@@ -11,13 +11,14 @@ easily add new templates and new ways to collect data to insert in the
 created files. As much as possible, Projy tries to be simple to use and
 extend.
 
-See `the complete documentation <http://projy.readthedocs.org/>`_.
+See `the complete documentation <http://projy.readthedocs.org/>`__.
 
 Installation
 ============
 
 If you are familiar with Python, it is strongly suggested that you
-install Projy in `virtualenv <http://pypi.python.org/pypi/virtualenv>`_.
+install Projy in
+`virtualenv <http://pypi.python.org/pypi/virtualenv>`__.
 
 Pip and Distribute
 ------------------
@@ -49,7 +50,7 @@ Usage
 
 As an example, let's create a Python package. The Projy template mostly
 follows recommendations from `The Hitchhiker's Guide to
-Packaging <http://guide.python-distribute.org/>`_.
+Packaging <http://guide.python-distribute.org/>`__.
 
 A simple example
 ----------------
@@ -79,9 +80,8 @@ In the same directory as you typed this command, you now have a
             __init__.py
 
 Each file has been created with a specific template, so the package is
-fully functional, yet empty. Now, let's give a little explanation on
-each file. You can find `further information
-here <http://guide.python-distribute.org/creation.html>`_.
+fully functional, yet empty. You can find `further information
+here <http://guide.python-distribute.org/creation.html>`__.
 
 Specify substitutions
 ---------------------
@@ -132,13 +132,16 @@ Available templates
 
 The currently available templates are:
 
--  a `Fabric <http://fabfile.org>`_ file ;
--  a `LaTeX <http://www.latex-project.org/>`_ book ;
--  a `Python <http://python.org/>`_ package ;
+-  a full `Django <http://djangoproject.com>`__ project, following most
+   of the recommandations from `Two scoops of
+   Django <https://2scoops.org/>`__ ;
+-  a `Fabric <http://fabfile.org>`__ file ;
+-  a `LaTeX <http://www.latex-project.org/>`__ book ;
+-  a `Python <http://python.org/>`__ package ;
 -  a Python script ;
--  a `Projy <https://github.com/stephanepechard/projy>`_ template,
+-  a `Projy <https://github.com/stephanepechard/projy>`__ template,
    meta-style.
--  a bootstrap file, to manage your virtualenv happiness ;
+-  a bootstrap file, to manage your virtualenv happiness.
 
 See the official doc for more details on created files into these
 templates. Soon to come, more templates around Django. Of course, anyone

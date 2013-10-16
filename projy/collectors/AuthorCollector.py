@@ -30,7 +30,8 @@ class AuthorCollector(Collector):
             cmd = Popen(["git", "config", "--get", "user.name"], stdout=PIPE)
             stdoutdata = cmd.communicate()
             if (stdoutdata[0]):
-                self.author = stdoutdata[0].rstrip(os.linesep)
+                author = stdoutdata[0].rstrip(os.linesep)
+                self.author = author.decode('utf8')
         except ImportError:
             pass
         except CalledProcessError:
