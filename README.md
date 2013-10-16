@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/stephanepechard/projy.png)](https://travis-ci.org/stephanepechard/projy)
+[![Downloads](https://pypip.in/d/Projy/badge.png)](https://crate.io/package/projy)
+[![PyPI version](https://badge.fury.io/py/Projy.png)](http://badge.fury.io/py/projy)
+
 Projy
 =====
 **Projy is a template-based skeleton generator**.
@@ -129,9 +133,3 @@ The currently available templates are:
 See the official doc for more details on created files into these
 templates. Soon to come, more templates around Django. Of course,
 anyone can propose some templates, they'll be integrated into Projy.
-
-
-Build status on travis-ci.org
------------------------------
-[![Build Status](https://travis-ci.org/stephanepechard/projy.png)](https://travis-ci.org/stephanepechard/projy)
-
