@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/stephanepechard/projy.png)](https://travis-ci.org/stephanepechard/projy)
 [![Downloads](https://pypip.in/d/Projy/badge.png)](https://crate.io/package/projy)
 [![PyPI version](https://badge.fury.io/py/Projy.png)](http://badge.fury.io/py/projy)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stephanepechard/projy/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 Projy
 =====
