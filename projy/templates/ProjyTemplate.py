@@ -119,7 +119,7 @@ class ProjyTemplate:
                     with open(input_file, 'r') as line:
                         template_line = Template(line.read())
                         output.write(template_line.
-                                safe_substitute(self.substitutes_dict))
+                                safe_substitute(self.substitutes_dict).encode('utf-8'))
                     output.close()
                 except IOError:
                     self.term.print_error_and_exit(u"Can't create template file"\
@@ -155,16 +155,13 @@ class ProjyTemplate:
         shutil.copy(name, file_path) # replace the original one
         os.remove(name)
 
-        # old version, not suitable with utf-8...
-        #for line in fileinput.input(file_path, inplace=1):
-            #if old_exp in line:
-                #line = line.replace(old_exp, new_exp)
-            ## write inline into the file (comma at the end is Python2 specific!)
-            #print(line),
-
 
     def touch(self, filename):
         """ A simple equivalent of the well known shell 'touch' command. """
         with file(filename, 'a'):
             os.utime(filename, None)
 
+
+    def posthook(self):
+        """ Empty post-hook, to be inherited. """
+        pass
