@@ -1,6 +1,13 @@
 Changelog
 =========
 
+
+0.4.1 (2013-10-21)
+----------------
+* Fix crash with UTF-8 username
+* Fix crash with some templates asking for a post hook
+
+
 0.4 (2013-10-15)
 ----------------
 * Add post hook to run python commands after template completion

@@ -9,8 +9,10 @@ from fabric.api import cd, env, execute, local, run, sudo, prefix
 # projy
 from projy import __version__
 
+COMMON_COMMIT_MESSAGE = u"Fast commit through Fabric"
 
-def commit(message= u"fast commit through Fabric", capture=True):
+
+def commit(message=COMMON_COMMIT_MESSAGE, capture=True):
     """ git commit with common commit message when omit. """
     env.warn_only = True
     local(u'git commit -am"{}"'.format(message))
@@ -21,9 +23,9 @@ def push():
     local("git push")
 
 
-def deploy():
+def deploy(message=COMMON_COMMIT_MESSAGE):
     """ Commit and push to git servers. """
-    execute(commit)
+    execute(commit, message)
     execute(push)
 
 
@@ -48,7 +50,7 @@ def md2rst(in_file, out_file, pipe):
 
 
 def readme():
-    md2rst('README.md', 'README.txt', '| head -n -6 | tail -n +3')
+    md2rst('README.md', 'README.txt', '| head -n -8 | tail -n +3')
 
 
 def build_doc():
