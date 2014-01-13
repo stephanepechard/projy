@@ -62,7 +62,7 @@ class ProjyTemplate:
             if not os.path.isdir(dir_name):
                 try:
                     os.makedirs(dir_name)
-                except OSError, error:
+                except OSError as error:
                     if error.errno != errno.EEXIST:
                         raise
             else:
