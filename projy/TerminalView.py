@@ -2,8 +2,11 @@
 """ Terminal view. """
 
 # system
-from blessings import Terminal
+import os
 import sys
+# pipped
+if os.name != 'nt':
+    from blessings import Terminal
 
 # color codes
 TERM_ORANGE = 0

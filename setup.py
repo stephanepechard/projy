@@ -23,7 +23,11 @@ setup(
     packages=['projy','projy.templates', 'projy.collectors'],
     url='http://stephanepechard.github.com/projy',
     long_description=open('README.txt').read(),
-    scripts=['bin/projy'],
+    entry_points = {
+        'console_scripts': [
+            'projy = projy.cmdline:execute',
+        ],
+    },
     install_requires=['blessings'],
     tests_require=['nose'],
     include_package_data=True,
