@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+0.4.2-dev
+---------
+* Replace bin script by auto-generated through entry_points
+* Fix Python3 error on install
+* Remove bootstrap file
+
 0.4.1 (2013-10-21)
 ----------------
 * Fix crash with UTF-8 username
