@@ -25,7 +25,7 @@ def docopt_arguments():
         -h, --help      Show this help message and exit.
         -v, --version   Show program's version number and exit.
     """
-    from docopt import docopt
+    from projy.docopt import docopt
     return docopt(doc, argv=sys.argv[1:], version='0.1')
 
 
