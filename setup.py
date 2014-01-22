@@ -2,16 +2,20 @@
 # -*- coding: utf-8 -*-
 """ Projy setup.py script """
 
-# projy
-from projy import __version__
-
 # system
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+import os
+# projy
+from projy import __version__
 
-from os.path import join, dirname
+# cross-platform incantations
+osname = os.uname()[0]
+install_requires = ['blessings']
+if osname == 'Windows':
+    install_requires = []
 
 
 setup(
@@ -28,7 +32,7 @@ setup(
             'projy = projy.cmdline:execute',
         ],
     },
-    install_requires=['blessings'],
+    install_requires=install_requires,
     tests_require=['nose'],
     include_package_data=True,
     classifiers=[
