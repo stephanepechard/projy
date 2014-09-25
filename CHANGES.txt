@@ -6,6 +6,8 @@ Changelog
 ---------
 * Replace bin script by auto-generated through entry_points
 * Fix Python3 error on install
+* Fix docopt import
+* Fix DEBUG_TOOLBAR_PANELS to version 1.0
 * Remove bootstrap file
 
 0.4.1 (2013-10-21)

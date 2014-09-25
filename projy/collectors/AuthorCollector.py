@@ -9,6 +9,7 @@
 
 # system
 import getpass
+import locale
 import os
 from subprocess import Popen, PIPE, CalledProcessError
 # parent class
@@ -26,12 +27,14 @@ class AuthorCollector(Collector):
         """ Get the author name from git information. """
         self.author = None
         try:
+            encoding = locale.getdefaultlocale()[1]
             # launch git command and get answer
             cmd = Popen(["git", "config", "--get", "user.name"], stdout=PIPE)
-            stdoutdata = cmd.communicate()
+            stdoutdata = cmd.communicate().decode(encoding)
             if (stdoutdata[0]):
+                import ipdb;ipdb.set_trace()
                 author = stdoutdata[0].rstrip(os.linesep)
-                self.author = author.decode('utf8')
+                self.author = author#.decode('utf8')
         except ImportError:
             pass
         except CalledProcessError:

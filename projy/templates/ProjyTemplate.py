@@ -118,8 +118,12 @@ class ProjyTemplate:
                 try:
                     with open(input_file, 'r') as line:
                         template_line = Template(line.read())
-                        output.write(template_line.
+                        try:
+                            output.write(template_line.
                                 safe_substitute(self.substitutes_dict).encode('utf-8'))
+                        except TypeError:
+                            output.write(template_line.
+                                safe_substitute(self.substitutes_dict))
                     output.close()
                 except IOError:
                     self.term.print_error_and_exit(u"Can't create template file"\
@@ -133,6 +137,9 @@ class ProjyTemplate:
 
     def make_posthook(self):
         """ Run the post hook into the project directory. """
+        print(id(self.posthook), self.posthook)
+        print(id(super(self.__class__, self).posthook), super(self.__class__, self).posthook)
+        import ipdb;ipdb.set_trace()
         if self.posthook:
             os.chdir(self.project_name) # enter the project main directory
             self.posthook()
@@ -148,7 +155,10 @@ class ProjyTemplate:
         for filelineno, line in enumerate(io.open(file_path, encoding="utf-8")):
             if old_exp in line:
                 line = line.replace(old_exp, new_exp)
-            tmp_file.write(line.encode('utf-8'))
+            try:
+                tmp_file.write(line.encode('utf-8'))
+            except TypeError:
+                tmp_file.write(line)
 
         name = tmp_file.name # keep the name
         tmp_file.close()
